@@ -2,6 +2,14 @@ import express, { application } from "express";
 
 const app = express();
 
-console.log("hello");
+// pug setting
+app.set('view engine', "pug");
+app.set("views", __dirname + "/views");
 
-app.listen(3000); // use port number : 3000
+app.use("/public", express.static(__dirname + "/public"));
+
+// set router
+app.get("/", (req, res) => res.render("home"));
+
+const handleListen = () => console.log(`Listening on http://localhost:3000`);
+app.listen(3000, handleListen); // use port number : 3000

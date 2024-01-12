@@ -1,3 +1,6 @@
 {
+    "_ignore_comment": 
+        "ignore 안에 있는 파일들이 수정되어도 서버를 새로고침 하지 않게 함.",
+    "ignore": ["src/public/*"],
     "exec": "babel-node src/server.js"
 }
