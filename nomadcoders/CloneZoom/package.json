@@ -1,0 +1,21 @@
+{
+  "name": "clonezoom",
+  "version": "1.0.0",
+  "description": "Zoom Clone using WebRTC and Websockets. I'll study with nomadcoders.co",
+  "license": "ISC",
+  "scripts": {
+    "_comment": "dev를 실행하면 nodemon을 실행시키고, 이는 nodemon.json에 있는 코드들을 실행시킨다.",
+    "dev": "nodemon"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.23.4",
+    "@babel/core": "^7.23.7",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.8",
+    "nodemon": "^3.0.2"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "pug": "^3.0.2"
+  }
+}
