@@ -20,4 +20,11 @@ const server = http.createServer(app);
 // views, static files, home, redirection을 원해서 http를 사용함.
 const wss = new WebSocketServer({server}); 
 
+const handleConnection = (socket) => {console.log(socket)};
+
+// 누군가와 연결되었을 때 event 발생. callback으로 socket을 받는다.
+// socket → 연결된 어떤 사람. 연결된 브라우저와의 contect 라인.
+// 이 socket을 어딘가에 저장해야함.
+wss.on("connection", handleConnection);
+
 server.listen(4000, handleListen);
