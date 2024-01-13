@@ -4,7 +4,7 @@
 Zoom Clone using NodeJS, WebRTC and Websockets.
 
 ----
-24-01-12
+### 2024-01-12
 * 개발 환경 구축
     * Nodemon
         * 노드 서버를 키고 코드를 수정하거나 업데이트 시, 서버를 내리고 다시 반영시키는 데 도움을 주는 기능
@@ -18,3 +18,27 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
     * 기타
         * public에 존재하는 js는 Frontend에서,<br>
         그 밖에 있는 server.js는 Backend에서 구동될 것이다.
+
+### 2024-01-13
+
+#### HTTP vs WebSocket(어제 푸쉬 안해서 복습 겸 다시 정리..)
+<img src="../pictures/httpVSwebsocket_01.png">
+
+* HTTP<br>
+
+클라이언트 (request) ↔ 서버 (response) 가 번갈아서 발생.<br>
+
+Stateless하다는 특징을 갖고 있어, 서버는 클라이언트를 기억하지 못하므로 로그인 유지와 같은 기능이 필요할 시, cookie를 서버에게 보내는 방식으로 유지하여야 한다.
+
+
+
+
+* WebSocket
+
+클라이언트가 서버에게 요청하면 서버는 수락 혹은 거부를 한다.<br>
+서버가 수락한다면 클라이언트와 서버는 연결(connection)되어 연결을 끊기 전까지 원하는대로 request와 response를 주고받을 수 있다.<br>
+
+
+참고)<br>
+일부 framework에서는 이미 채팅방 기능이 있다.<br>
+npmjs에 있는 ws 라이브러리의 경우, webSocket의 기초적인 기능만 있다. 이를 이용하여 채팅방과 같은 기능을 구현하려면 개발자가 logic을 구현해야 한다.
