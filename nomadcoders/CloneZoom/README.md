@@ -21,7 +21,7 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 
 ### 2024-01-13
 
-#### HTTP vs WebSocket(어제 푸쉬 안해서 복습 겸 다시 정리..)
+#### (이론) HTTP vs WebSocket(어제 푸쉬 안해서 복습 겸 다시 정리..)
 <img src="../pictures/httpVSwebsocket_01.png">
 
 * HTTP<br>
@@ -42,3 +42,8 @@ Stateless하다는 특징을 갖고 있어, 서버는 클라이언트를 기억�
 참고)<br>
 일부 framework에서는 이미 채팅방 기능이 있다.<br>
 npmjs에 있는 ws 라이브러리의 경우, webSocket의 기초적인 기능만 있다. 이를 이용하여 채팅방과 같은 기능을 구현하려면 개발자가 logic을 구현해야 한다.
+
+---
+* 개발 관련
+    * express 변경
+        * ws서버를 만드는 대신 express서버와 합침.(합치기 전의 express 서버는 http를 다룸.)
