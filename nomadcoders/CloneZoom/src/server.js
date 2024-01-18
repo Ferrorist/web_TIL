@@ -1,5 +1,6 @@
 import http from "http"; // nodeJS에 자체적으로 갖고 있음.
-import { WebSocketServer } from "ws";
+// import { WebSocketServer } from "ws";
+import SocketIO from "socket.io";
 import express from "express";
 
 const app = express();
@@ -13,12 +14,25 @@ app.get("/*", (_, res) => res.redirect("/"));
 const handleListen = () => console.log(`Listening on http://localhost:4000`);
 
 // requestListener가 필요함. http 서버를 만들고 access 할 수 있음.
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
 
 // WebSocketServer에게 매개변수를 주지 않아도 상관없음.
 // 해당 방식으로 구현하면 같은 서버에서 http와 websocket 둘 다 작동. (같은 port 사용)
 // views, static files, home, redirection을 원해서 http를 사용함.
-const wss = new WebSocketServer({server}); 
+// const wss = new WebSocketServer({server}); 
+
+const wsServer = SocketIO(httpServer);
+
+wsServer.on("connection", socket => {
+    socket.on("enter_room", (msg, done) => {
+        console.log(msg);
+        setTimeout(() => {
+            done();
+        }, 5000);
+    });
+});
+
+/*
 
 // 연결된 socket들이 들어갈 list
 const sockets = [];
@@ -45,4 +59,6 @@ wss.on("connection", (socket) => {
     });
 });
 
-server.listen(4000, handleListen);
+*/
+
+httpServer.listen(4000, handleListen);

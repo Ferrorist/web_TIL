@@ -1,53 +1,19 @@
-const messageList = document.querySelector("ul");
-const nickForm = document.querySelector("#nick");
-const messageform = document.querySelector("#message");
+// io : 자동적으로 back-end socket.io와 연결해주는 function
+const socket = io();
 
-// 서버와 연결
-const socket = new WebSocket(`ws://${window.location.host}`);
+const welcome = document.getElementById("welcome");
+const form = welcome.querySelector("form");
 
-const makeMessage = (type, payload) => {
-    const msg = {type, payload};
-    return JSON.stringify(msg);
-}
-
-// socket이 open 되었다면, 이벤트 발생.
-socket.addEventListener("open", () => {
-    console.log("Connected to Server ✔");
-});
-
-
-socket.addEventListener("message", (message) => {
-    const li = document.createElement("li");
-    li.innerText = message.data;
-    messageList.append(li);
-    // console.log("New message: ", message.data);
-    // message: MessageEvent
-    // data, timestamp 등을 payload? 로 가짐.
-});
-
-socket.addEventListener("close", () => {
-    console.log("Disconnected from Server 💦");
-});
-
-const handleSubmit = (event) => {
+const handleRoomSubmit = (event) => {
     event.preventDefault();
-    const input = messageform.querySelector("input");
-    socket.send(makeMessage("new_message", input.value));
+    const input = form.querySelector("input");
+
+    // 특정한 event를 emit할 수 있으며, object를 전송할 수 있음.
+    // callback: 서버로부터 실행되는 function
+    socket.emit("enter_room", {payload: input.value}, () => { 
+        console.log("server is done!");
+    });
     input.value = "";
-    // console.log(input.value);
 }
 
-const handleNickSubmit = (event) => {
-    event.preventDefault();
-    const input = nickForm.querySelector("input");
-    socket.send(makeMessage("nickname", input.value));
-}
-
-messageform.addEventListener("submit", handleSubmit);
-nickForm.addEventListener("submit", handleNickSubmit);
-
-// setTimeout(() => {
-//     socket.send("hello from the browser!");
-// }, 8000);
-
-
+form.addEventListener("submit", handleRoomSubmit);

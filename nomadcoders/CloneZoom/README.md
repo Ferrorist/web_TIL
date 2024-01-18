@@ -47,3 +47,12 @@ npmjs에 있는 ws 라이브러리의 경우, webSocket의 기초적인 기능�
 * 개발 관련
     * express 변경
         * ws서버를 만드는 대신 express서버와 합침.(합치기 전의 express 서버는 http를 다룸.)
+
+
+### 2024-01-18
+
+#### SocketIO vs Websocket
+SocketIO는 프레임워크이며, websocket의 부가기능이 아니다.
+websocket은 SocketIO가 실시간, 양방향, event 기반 통신을 제공하는 방법 중 하나다.
+
+A 라는 브라우저가 websocket을 지원하지 않는다고 하여도 socketIO는 작동한다.
