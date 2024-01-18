@@ -24,11 +24,14 @@ const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
 
 wsServer.on("connection", socket => {
-    socket.on("enter_room", (msg, done) => {
-        console.log(msg);
-        setTimeout(() => {
-            done();
-        }, 5000);
+    socket.onAny((event) => {
+        console.log(`Socket Event: ${event}`);
+    });
+    socket.on("enter_room", (roomName, done) => {
+        // console.log(socket.rooms); // socket.rooms : socket이 있는 rooms를 보여줌.
+        socket.join(roomName); // roomName으로 방 참가
+        // console.log(socket.rooms);
+        done();
     });
 });
 
