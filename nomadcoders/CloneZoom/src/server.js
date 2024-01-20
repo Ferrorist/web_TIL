@@ -1,6 +1,7 @@
 import http from "http"; // nodeJS에 자체적으로 갖고 있음.
 // import { WebSocketServer } from "ws";
-import SocketIO from "socket.io";
+import {Server} from "socket.io";
+import {instrument} from "@socket.io/admin-ui";
 import express from "express";
 
 const app = express();
@@ -21,7 +22,17 @@ const httpServer = http.createServer(app);
 // views, static files, home, redirection을 원해서 http를 사용함.
 // const wss = new WebSocketServer({server}); 
 
-const wsServer = SocketIO(httpServer);
+const wsServer = new Server(httpServer, {
+    cors: {
+        origin: ["https://admin.socket.io"],
+        credentials: true,
+    }
+});
+
+instrument(wsServer, {
+    auth: false,
+});
+
 
 function publicRooms() {
     const {sockets: {adapter: {sids, rooms}}} = wsServer;
@@ -38,6 +49,10 @@ function publicRooms() {
     return publicRooms;
 }
 
+function countRoom(roomName) {
+    return wsServer.socket.adapter.rooms.get(roomName)?.size;
+}
+
 wsServer.on("connection", socket => {
     socket["nickname"] = "ㅇㅇ";
     socket.onAny((event) => {
@@ -49,14 +64,14 @@ wsServer.on("connection", socket => {
         socket.join(roomName); // roomName으로 방 참가
         // console.log(socket.rooms);
         done();
-        socket.to(roomName).emit("welcome", socket.nickname);
+        socket.to(roomName).emit("welcome", socket.nickname, countRoom(roomName));
         wsServer.sockets.emit("room_change", publicRooms());
     });
     // disconnected 와는 다름. socket이 방을 떠나기 바로 직전에 발생함.
     socket.on("disconnecting", () => {
-        socket.rooms.forEach(room => socket.to(room).emit("bye", socket.nickname));
+        socket.rooms.forEach(room => socket.to(room).emit("bye", socket.nickname, countRoom(room)-1));
     });
-    
+
     socket.on("new_message", (msg, room, done) => {
         socket.to(room).emit("new_message", `${socket.nickname}: ${msg}`);
         done(); // 백엔드가 아닌 프론트에서 실행함.
