@@ -52,7 +52,12 @@ npmjs에 있는 ws 라이브러리의 경우, webSocket의 기초적인 기능�
 ### 2024-01-18
 
 #### SocketIO vs Websocket
-SocketIO는 프레임워크이며, websocket의 부가기능이 아니다.
+SocketIO는 실시간 웹 애플리케이션을 위한 이벤트 기반 라이브러리이며, websocket의 부가기능이 아니다.
 websocket은 SocketIO가 실시간, 양방향, event 기반 통신을 제공하는 방법 중 하나다.
 
 A 라는 브라우저가 websocket을 지원하지 않는다고 하여도 socketIO는 작동한다.
+
+
+#### socketIO의 adapter
+어플리케이션의 규모가 커지면서 여러 서버가 생기게 된다면,
+여러 서버가 하나의 DB를 보게 만들고 결국 adapter를 통해 일관성을 유지해야 한다.
