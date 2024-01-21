@@ -1,5 +1,7 @@
 import http from "http"; // nodeJS에 자체적으로 갖고 있음.
-import { WebSocketServer } from "ws";
+// import { WebSocketServer } from "ws";
+import SocketIO from "socket.io";
+import {instrument} from "@socket.io/admin-ui";
 import express from "express";
 
 const app = express();
@@ -13,29 +15,23 @@ app.get("/*", (_, res) => res.redirect("/"));
 const handleListen = () => console.log(`Listening on http://localhost:4000`);
 
 // requestListener가 필요함. http 서버를 만들고 access 할 수 있음.
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
+const wsServer = SocketIO(httpServer);
 
-// WebSocketServer에게 매개변수를 주지 않아도 상관없음.
-// 해당 방식으로 구현하면 같은 서버에서 http와 websocket 둘 다 작동. (같은 port 사용)
-// views, static files, home, redirection을 원해서 http를 사용함.
-const wss = new WebSocketServer({server}); 
-
-// 연결된 socket들이 들어갈 list
-const sockets = [];
-
-
-// 누군가와 연결되었을 때 event 발생. callback으로 socket을 받는다.
-// socket → 연결된 어떤 사람. 연결된 브라우저와의 contect 라인.
-// 이 socket을 어딘가에 저장해야함.
-wss.on("connection", (socket) => {
-    sockets.push(socket);
-    console.log("Connected to Browser ✔");
-    socket.on("close", () => console.log("Disconnected from the Browser 💦"));
-    socket.on("message", message => {
-        sockets.forEach((aSocket) => aSocket.send(message.toString('utf-8')));
-        // socket.send(message.toString('utf-8'));
-        // console.log(message.toString('utf8'));
+wsServer.on("connection", socket => {
+    socket.on("join_room", (roomName) => {
+        socket.join(roomName);
+        socket.to(roomName).emit("welcome");
     });
-});
+    socket.on("offer", (offer, roomName) => {
+        socket.to(roomName).emit("offer", offer);
+    });
+    socket.on("answer", (answer, roomName) => {
+        socket.to(roomName).emit("answer", answer);
+    })
+    socket.on("ice", (ice, roomName) => {
+        socket.to(roomName).emit("ice", ice);
+    })
+})
 
-server.listen(4000, handleListen);
+httpServer.listen(4000, handleListen);
