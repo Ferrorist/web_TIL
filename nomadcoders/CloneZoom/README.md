@@ -77,3 +77,9 @@ signaling이 끝나면 P2P 연결이 된다.<br>
 브라우저는 서버한테 setting이나 configuration, 위치를 알려준다.<br>
 그럼 서버는 상대방의 위치나 정보를 알려준다.<br>
 이후, 서버에게 받은 정보와 위치를 이용하여 P2P 연결을 할 수 있다.
+<br><br>
+
+<img src="../pictures/webRTC_01.png">
+
+참고 사이트:<br>
+[[webRTC] 5. 라이브 스트리밍 구현 (1) offer & answer](https://oneroomtable.com/entry/WebRTC-5-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EA%B5%AC%ED%98%84-1-offer-answer)
