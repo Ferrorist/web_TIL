@@ -94,3 +94,39 @@ Ice Candidate는 브라우저가 서로 소통할 수 있게 해주는 방법이
 
 참고)
 [RTCIceCandidate](https://developer.mozilla.org/ko/docs/Web/API/RTCIceCandidate)
+
+#### Sender?
+myPeerConnection을 살펴보면 Sender라는 것이 있다. (RTCRtpSender)
+Sender는 무엇일까?<br>
+<br>
+Sender는 우리의 peer로 보내진 media stream track을 컨트롤하게 해준다.<br>
+ex) replaceTrack
+<br>
+
+참고)
+[RTCRtpSender](https://developer.mozilla.org/en-US/docs/Web/API/RTCRtpSender)
+
+#### STUN 서버?
+STUN 서버는 컴퓨터가 공용 IP주소를 찾게 해준다.<br>
+어떤 것을 request하면 인터넷에서 브라우저가 누군지를 알려주는 서버이다. 서버는 공용 IP를 알려줄 것이다.
+<br><br>
+구글에서 무료로 제공하는 서버가 있다. 이를 이용하여 STUN 서버를 만들 수 있다.
+
+#### Data Channel...
+P2P 유저가 언제든지 모든 종류의 데이터를 주고 받을 수 있는 채널.<br>
+이미지, 파일, 텍스트 같은 것들도 서로 주고받을 수 있게 된다.<br>
+Data Channel을 만든다면 Socket.io도 필요 없을 것이다.<br>
+
+[RTCDataChannel](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel)
+
+#### webRTC를 쓰면 안되는 곳?
+너무 많은 peer를 가진다면 webRTC가 좋지 않을 수 있다.<br>
+peer 수가 늘어나면 느려지기 시작할 것이다. (peer-to-peer로 서로 연결되어 있기 때문)<br>
+
+대신 몇몇 회사는 Mesh가 아닌 SFU 라는 것을 사용한다.<br>
+SFU(Selective Forwarding Unit). 이는 서버에 의존한다.<br>
+서버는 유저들 모두로부터 스트림을 받는데, 서버는 그 스트림들을 압축하고 있다.<br>
+그리고 서버는 누가 방의 호스트인지, 누가 말하고 있는지 등을 알고 있다.<br>
+만약 한 유저가 발표를 하고 있지 않다면, 카메라 화면이 있지만 작을 것이고, 그 때 서버는 해당 스트림을 압축한다.<br>
+그래서 사람들이 스트림을 다운로드할 때 질이 좋지 않은 스트림을 다운로드한다.<br>
+

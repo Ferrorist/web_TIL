@@ -91,6 +91,12 @@ function handleCameraClick() {
 
 async function handleCameraChange() {
     await getMedia(camerasSelect.value);
+    if(myPeerConnection){
+        const videoTrack = myStream.getVideoTracks()[0];
+        // senders를 가짐.
+        const videoSender = myPeerConnection.getSenders().find(sender => sender.track.kind === "video");
+        videoSender.replaceTrack(videoTrack);
+    }
 }
 
 muteBtn.addEventListener("click", handleMuteClick);
@@ -159,7 +165,21 @@ function makeConnection() {
     // 카메라에서 오는 stream을 가져다가 연결을 만들 것이다.
     // 영상과 오디오를 연결을 통해 전달하려고 한다.
     // 그러니까 그 P2P 연결 안에다가 영상과 오디오를 집어넣어야 한다.
-    myPeerConnection = new RTCPeerConnection();
+    myPeerConnection = new RTCPeerConnection({
+        iceServers: [
+        {
+            // 공용 주소를 알아내기 위해 STUN 서버를 사용함.
+            // 구글이 무료로 제공함.
+            urls: [
+                "stun:stun.l.google.com:19302",
+                "stun:stun1.l.google.com:19302",
+                "stun:stun2.l.google.com:19302",
+                "stun:stun3.l.google.com:19302",
+                "stun:stun4.l.google.com:19302",
+                ],
+            },
+        ],
+    });
     myPeerConnection.addEventListener("icecandidate", handleIce);
     myPeerConnection.addEventListener("addstream", handleAddStream);
 
