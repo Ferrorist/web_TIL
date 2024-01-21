@@ -83,3 +83,14 @@ signaling이 끝나면 P2P 연결이 된다.<br>
 
 참고 사이트:<br>
 [[webRTC] 5. 라이브 스트리밍 구현 (1) offer & answer](https://oneroomtable.com/entry/WebRTC-5-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%8A%A4%ED%8A%B8%EB%A6%AC%EB%B0%8D-%EA%B5%AC%ED%98%84-1-offer-answer)
+
+#### IceCandidate?
+Internet Connectivity Establishment(인터넷 연결 생성)<br>
+webRTC에 필요한 프로토콜을 의미함. 멀리 떨어진 장치와 소통할 수 있게 하기 위함.<br>
+Ice Candidate는 브라우저가 서로 소통할 수 있게 해주는 방법이다.<br>
+어떤 소통 방법이 가장 좋을 것인지를 제안할 때 씀.<br>
+다수의 candidate(후보)들이 각각의 연결에서 제안되고 그리고 그들은 서로의 동의 하에 하나를 선택한다. 그리고 그것을 소통 방식에 사용한다.<br>
+
+
+참고)
+[RTCIceCandidate](https://developer.mozilla.org/ko/docs/Web/API/RTCIceCandidate)

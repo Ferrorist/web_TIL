@@ -134,15 +134,24 @@ socket.on("welcome", async () => {
 
 // offer를 받는 입장. offer를 주고 받은 순간, 직접적으로 대화할 수 있게 됨.
 socket.on("offer", async (offer) => {
+    console.log("received the offer");
     myPeerConnection.setRemoteDescription(offer);
     const answer = await myPeerConnection.createAnswer();
     myPeerConnection.setLocalDescription(answer);
     socket.emit("answer", answer, roomName);
+    console.log("sent the offer");
 })
 
 socket.on("answer", answer => {
+    console.log("received the answer");
     myPeerConnection.setRemoteDescription(answer);
 });
+
+socket.on("ice", ice => {
+    console.log("received icecandidate");
+    myPeerConnection.addIceCandidate(ice);
+
+})
 
 // RTC Code
 
@@ -151,9 +160,22 @@ function makeConnection() {
     // 영상과 오디오를 연결을 통해 전달하려고 한다.
     // 그러니까 그 P2P 연결 안에다가 영상과 오디오를 집어넣어야 한다.
     myPeerConnection = new RTCPeerConnection();
+    myPeerConnection.addEventListener("icecandidate", handleIce);
+    myPeerConnection.addEventListener("addstream", handleAddStream);
+
 
     // myStream.getTracks() 에서 오디오 트랙과 비디오 트랙을 얻을 수 있음.
     myStream.getTracks().forEach(track => {
         myPeerConnection.addTrack(track, myStream);
     });
+}
+
+function handleIce(data) {
+    console.log("sent icecandidate");
+    socket.emit("ice", data.candidate, roomName);
+}
+
+function handleAddStream(data) {
+    const peerFace = document.getElementById("peerFace");
+    peerFace.srcObject = data.stream;
 }
