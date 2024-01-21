@@ -117,6 +117,12 @@ P2P 유저가 언제든지 모든 종류의 데이터를 주고 받을 수 있�
 이미지, 파일, 텍스트 같은 것들도 서로 주고받을 수 있게 된다.<br>
 Data Channel을 만든다면 Socket.io도 필요 없을 것이다.<br>
 
+<br>
+먼저, 무언가를 offer하는 socket이 Data Channel을 생성하는 주체가 되어야 한다.<br>
+그리고 offer를 만들기 전에 Data Channel을 만드는 것이다.<br>
+다른 peer는 Data Channel이 있을 때 EventListener를 만들면 된다.
+
+
 [RTCDataChannel](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel)
 
 #### webRTC를 쓰면 안되는 곳?

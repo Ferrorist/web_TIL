@@ -16,6 +16,9 @@ let roomName;
 /** @type {RTCPeerConnection} */
 let myPeerConnection;
 
+/** @type {RTCDataChannel} */
+let myDataChannel;
+
 async function getCameras() {
     try{
         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -129,7 +132,9 @@ welcomeForm.addEventListener("submit", handleWelcomeSubmit);
 // Socket Code
 
 socket.on("welcome", async () => {
-    // console.log("someone join!");
+    myDataChannel = myPeerConnection.createDataChannel("chat");
+    myDataChannel.addEventListener("message", (event) => console.log(event.data));
+    console.log("made data channel");
     const offer = await myPeerConnection.createOffer();
     myPeerConnection.setLocalDescription(offer);
     console.log("sent the offer");
@@ -140,6 +145,10 @@ socket.on("welcome", async () => {
 
 // offer를 받는 입장. offer를 주고 받은 순간, 직접적으로 대화할 수 있게 됨.
 socket.on("offer", async (offer) => {
+    myPeerConnection.addEventListener("datachannel", event => {
+        myDataChannel = event.channel;
+        myDataChannel.addEventListener("message", (event) => console.log(event.data));
+    });
     console.log("received the offer");
     myPeerConnection.setRemoteDescription(offer);
     const answer = await myPeerConnection.createAnswer();
