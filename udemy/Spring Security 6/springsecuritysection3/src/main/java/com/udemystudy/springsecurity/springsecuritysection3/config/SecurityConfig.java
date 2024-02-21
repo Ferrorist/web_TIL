@@ -1,14 +1,18 @@
 package com.udemystudy.springsecurity.springsecuritysection3.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -33,33 +37,42 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public InMemoryUserDetailsManager userDetailsService() {
-		// 일반 텍스트 비밀번호를 사용하기 위해 withDefaultPasswordEncoder 메소드를 사용함.
-		// UserDetails admin = User.withDefaultPasswordEncoder()
-		// 	.username("admin")
-		// 	.password("12345")
-		// 	.authorities("admin")
-		// 	.build();
-		//
-		// UserDetails user = User.withDefaultPasswordEncoder()
-		// 	.username("user")
-		// 	.password("12345")
-		// 	.authorities("read")
-		// 	.build();
-
-		UserDetails admin = User.withUsername("admin")
-			.password("12345")
-			.authorities("admin")
-			.build();
-
-		UserDetails user = User.withUsername("user")
-			.password("12345")
-			.authorities("read")
-			.build();
-
-		return new InMemoryUserDetailsManager(admin, user);
+	public UserDetailsService userDetailsService(DataSource dataSource){
+		return new JdbcUserDetailsManager(dataSource);
 	}
 
+	// @Bean
+	// public InMemoryUserDetailsManager userDetailsService() {
+	// 	// 일반 텍스트 비밀번호를 사용하기 위해 withDefaultPasswordEncoder 메소드를 사용함.
+	// 	// UserDetails admin = User.withDefaultPasswordEncoder()
+	// 	// 	.username("admin")
+	// 	// 	.password("12345")
+	// 	// 	.authorities("admin")
+	// 	// 	.build();
+	// 	//
+	// 	// UserDetails user = User.withDefaultPasswordEncoder()
+	// 	// 	.username("user")
+	// 	// 	.password("12345")
+	// 	// 	.authorities("read")
+	// 	// 	.build();
+	//
+	// 	UserDetails admin = User.withUsername("admin")
+	// 		.password("12345")
+	// 		.authorities("admin")
+	// 		.build();
+	//
+	// 	UserDetails user = User.withUsername("user")
+	// 		.password("12345")
+	// 		.authorities("read")
+	// 		.build();
+	//
+	//
+	//
+	// 	return new InMemoryUserDetailsManager(admin, user);
+	// }
+
+
+	// Spring Security에게 비밀번호가 어떤 방식으로 저장되어 있는지 알려줘야 한다.
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
