@@ -28,18 +28,20 @@ public class SecurityConfig {
 
 		// Spring Security 6.1과 Spring Boot 3.1.0 버전 부터는 메서드 체이닝 사용을 지양.
 		// 람다식을 통해 함수형으로 설정하게 지향함.
-		http.authorizeHttpRequests((requests) -> requests
+
+		http.csrf((httpSecurityCsrfConfigurer) -> httpSecurityCsrfConfigurer.disable())
+			.authorizeHttpRequests((requests) -> requests
 				.requestMatchers("/myAccount", "/mybalance", "/myloan", "/myCards").authenticated()
-				.requestMatchers("/notices", "/contact").permitAll())
+				.requestMatchers("/notices", "/contact", "/register").permitAll())
 			.formLogin(Customizer.withDefaults())
 			.httpBasic(Customizer.withDefaults());
 		return http.build();
 	}
 
-	@Bean
-	public UserDetailsService userDetailsService(DataSource dataSource){
-		return new JdbcUserDetailsManager(dataSource);
-	}
+	// @Bean
+	// public UserDetailsService userDetailsService(DataSource dataSource){
+	// 	return new JdbcUserDetailsManager(dataSource);
+	// }
 
 	// @Bean
 	// public InMemoryUserDetailsManager userDetailsService() {
